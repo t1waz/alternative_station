@@ -1,0 +1,673 @@
+<MainWindow>:
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 1,1,1, .80
+            Rectangle:
+                pos: root.pos
+                size: root.size
+        orientation: 'vertical'
+        color: (1,1,1,0)
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                canvas.before:
+                    Color:
+                        rgba: 0,0,0, 0.75
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                orientation: 'horizontal'
+                size_hint: 1, .18
+                Label:
+                    text: '[b]LAGGING ROOM - 00[b]'
+                    markup: 'True'
+                    font_size: self.parent.width/20
+                Label:
+                    size_hint: 0.3 , 1
+                Image:
+                    source: 'logo.png'
+                    size_hint: 0.5 , 1
+                Label:
+                    size_hint: .1, 1
+            BoxLayout:
+                orientation: 'horizontal'
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: .9, 1
+                    Label:
+                        size_hint: 1, 0.4
+                    Label:
+                        text: '[b]SCANNED BARCODES[b]'
+                        markup: 'True'
+                        size_hint: 1, 1.2
+                        font_size: self.parent.width/13
+                        color: 0, .6156, .48235
+                    Label:
+                        size_hint: 1, 0.2
+                    Label:
+                        id: barcode1
+                        text: ''
+                        color: 0, 0, 0, 1
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode2
+                        text: ''
+                        color: 0, 0, 0, 0.95
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode3
+                        text: ''
+                        color: 0, 0, 0, 0.9
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode4
+                        text: ''
+                        color: 0, 0, 0, 0.85
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode5
+                        text: ''
+                        color: 0, 0, 0, 0.8
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode6
+                        text: ''
+                        color: 0, 0, 0, 0.75
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode7
+                        text: ''
+                        color: 0, 0, 0, 0.7
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode8
+                        text: ''
+                        color: 0, 0, 0, 0.65
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode9
+                        text: ''
+                        color: 0, 0, 0, 0.6
+                        font_size: self.parent.width/19
+                    Label:
+                        id: barcode10
+                        text: ''
+                        color: 0, 0, 0, 0.55
+                        font_size: self.parent.width/19
+                    Label:
+                        size_hint: 1, 0.5
+                Label:
+                    size_hint: 0.01 , 1
+                BoxLayout:
+                    orientation: 'vertical'
+                    Label:
+                        size_hint: 1, 0.7
+                    Label:
+                        id: last_code
+                        text: '[b]-[b]'
+                        markup: 'True'
+                        color: 1,0,0, .5
+                        font_size: self.parent.width/10
+                        size_hint: 1 , .6
+                    Label:
+                        id: last_code_time
+                        text: '[b]-[b]'
+                        markup: 'True'
+                        color: 1,0,0,.6
+                        font_size: self.parent.width/10
+                        size_hint: 1, 0.5
+                        size_hint: 1 , .6
+                    Label:
+                        id: status
+                        text: '[b]DISCONNECT[b]'
+                        markup: 'True'
+                        color: 0,0,0,.7
+                        font_size: self.parent.width/12
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint: 1 , .6
+                    Label:
+                        id: worker_label
+                        text: '-'
+                        font_size: self.parent.width/13
+                        color: 0, .6156, .48235, 1
+                        halign: 'center'
+                        valign: 'middle'
+                        size_hint: 1 , .6
+                    Label:
+                        size_hint: 1, .2
+                    BoxLayout:
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint: 1.2 ,1.1
+                            Label:
+                                size_hint: 1, 0.4
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                Label:
+                                    size_hint: .05 , 1
+                                Button:
+                                    text: 'ADD COMMENTS'
+                                    font_size: self.parent.width/26
+                                    text_size: self.parent.width/4  , None
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    background_color: 0, .6156, .48235
+                                    background_color: 0, .6156, .48235, 1
+                                    background_normal: ''
+                                    on_press:
+                                Label:
+                                    size_hint: .1 , 1
+                                Button:
+                                    text: 'ADD 2nd CATEGORY'
+                                    font_size: self.parent.width/26
+                                    text_size: self.parent.width/5, None
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    background_color: 0, .6156, .48235, 1
+                                    background_normal: ''
+                                    on_press:
+                                Label:
+                                    size_hint: .1 , 1
+                                Button:
+                                    text: 'STOCK'
+                                    font_size: self.parent.width/26
+                                    background_color: 0, .6156, .48235, 1
+                                    background_normal: ''
+                                    on_press:
+                                Label:
+                                    size_hint: .1 , 1
+                                Button:
+                                    text: 'EXIT'
+                                    font_size: self.parent.width/26
+                                    text_size: self.parent.width/5, None
+                                    halign: 'center'
+                                    valign: 'middle'
+                                    background_color: 0, .6156, .48235, 1
+                                    background_normal: ''
+                                    on_press:
+                                Label:
+                                    size_hint: .05 , 1
+                    Label:
+                        text: 'COMMENT'
+                        color: 0,0,0,1
+                        size_hint: 1, 0.3
+                    TextInput:
+                        id: comment
+                        size_hint: 1 , 0.6
+                    Label:
+                        size_hint: 1, 0.3
+                Label:
+                    size_hint: .03, 1
+<MessageWindow>:
+    size_hint: 0.5, 0.5
+    title_align: 'center'
+    title: 'WIADOMOSC DLA PANA MURZYNA'
+    BoxLayout:
+        Label:
+            id: messagetext
+<InfoWindow>:
+    on_open: root.popup_count()
+    size_hint: 0.8, 0.8
+    title_align: 'center'
+    title: 'BOARDS TO SAND'                                                                                              #tu zmienic
+    BoxLayout:
+        orientation: 'horizontal'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: cut00
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut01
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut02
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut03
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut04
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut05
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut06
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut07
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut08
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut09
+                text: '0'
+                color: 1,0,0,1
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: cut10
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut11
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut12
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut13
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut14
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut15
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut16
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut17
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut18
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut19
+                text: '0'
+                color: 1,0,0,1
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: cut20
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut21
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut22
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut23
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut24
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut25
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut26
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut27
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut28
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut29
+                text: '0'
+                color: 1,0,0,1
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+            Label:
+                text:
+                size_hint: 1.5 , 1
+                text_size: self.width, self.height
+                font_size: self.parent.width/root.board_name_text_scale
+                halign: 'left'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                id: cut30
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut31
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut32
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut33
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut34
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut35
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut36
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut37
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut38
+                text: '0'
+                color: 1,0,0,1
+            Label:
+                id: cut39
+                text: '0'
+                color: 1,0,0,1

@@ -2,6 +2,14 @@ from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
+from settings import LabelNames
+from scanner import barcode_scanner
+
+import threading
+
+from kivy.logger import Logger
+
+
 
 
 Builder.load_file('graphic.kv')
@@ -17,9 +25,18 @@ class InfoWindow(Popup):
         super(InfoWindow, self).__init__(**kwargs)
 
 
-class MainWindow(Screen):
+class MainWindow(Screen, LabelNames):
+
     def __init__(self, **kwargs):
+        LabelNames.__init__(self)
+        self.aaa_label = ""
         super(MainWindow, self).__init__(**kwargs)
+        threading.Thread(target = barcode_scanner.run_thread()).start()
+
+    def start_thread(self):
+        print(barcode_scanner.barcode_scan)
+
+
 
 class ScanApp(App):
     def __init__(self, **kwargs):
@@ -27,6 +44,7 @@ class ScanApp(App):
 
     def build(self):
         return MainWindow()
+
 
 
 if __name__ == '__main__':

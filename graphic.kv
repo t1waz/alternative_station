@@ -21,7 +21,7 @@
                 orientation: 'horizontal'
                 size_hint: 1, .18
                 Label:
-                    text: '[b]LAGGING ROOM - 00[b]'
+                    text: root.main_app_name
                     markup: 'True'
                     font_size: self.parent.width/20
                 Label:
@@ -157,7 +157,7 @@
                                     background_color: 0, .6156, .48235
                                     background_color: 0, .6156, .48235, 1
                                     background_normal: ''
-                                    on_press:
+                                    on_press: root.start_thread()
                                 Label:
                                     size_hint: .1 , 1
                                 Button:
@@ -204,7 +204,7 @@
 <MessageWindow>:
     size_hint: 0.5, 0.5
     title_align: 'center'
-    title: 'WIADOMOSC DLA PANA MURZYNA'
+    title: root.message_window_name
     BoxLayout:
         Label:
             id: messagetext
@@ -212,7 +212,7 @@
     on_open: root.popup_count()
     size_hint: 0.8, 0.8
     title_align: 'center'
-    title: 'BOARDS TO SAND'                                                                                              #tu zmienic
+    title: root.info_window_name
     BoxLayout:
         orientation: 'horizontal'
         BoxLayout:

@@ -1,11 +1,8 @@
-from kivy.uix.image import Image
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.core.text import Label as ButtonText
-from kivy.uix.image import Image
-from kivy.core.window import Window
-from kivy.clock import Clock
-from kivy.properties import NumericProperty
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-from kivy.core.text import Label as CoreLabel
+UC_PORT_NAME = '/dev/ttyUSB1'
+UC_BAUD_RATE = 115200
+
+class LabelNames:
+	def __init__(self):
+		self.main_app_name = '[b]LAGGING ROOM - 00[b]'
+		self.message_window_name = 'Wiadomosc dla Pana Murzyna'
+		self.info_window_name = "TO SAND"

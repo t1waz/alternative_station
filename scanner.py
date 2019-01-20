@@ -1,18 +1,17 @@
 import serial
 import time
-import threading
 from settings import UC_PORT_NAME, UC_BAUD_RATE
+
+last_barcode = -2
+
 
 class BarcodeScanner:
 	def __init__(self):
 		self.MasterModule = serial.Serial(UC_PORT_NAME, UC_BAUD_RATE)
-		self.barcode_read = -2
-		time.sleep(1)
 
 	def serial_write(self, data_to_send):
 		self.MasterModule.write(str(data_to_send).encode('utf-8'))
 		self.MasterModule.flush()
-		time.sleep(0.01)
 
 	def serial_clear(self):
 		if (self.MasterModule.inWaiting() > 0):
@@ -42,15 +41,17 @@ class BarcodeScanner:
 			self.serial_write(sendConfirmation)
 			readConfirmation = self.serial_read()
 			if (readConfirmation[0:4] == 'AC2E'):
-				return readData[1:17]
+				return int(readData[1:17])
 			else:
 				return 0
 		else:
 			return 0
+	
+	def get_latest_barcode(self):
+		global last_barcode
 
-	def run_thread(self):
-		while True:
-			self.barcode_read = self.ask_data()
+		current_read = self.ask_data()
+		if current_read != last_barcode and current_read != 0:
+			last_barcode = current_read
 
-
-barcode_scanner = BarcodeScanner()
+		return last_barcode

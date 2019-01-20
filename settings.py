@@ -1,4 +1,4 @@
-UC_PORT_NAME = '/dev/ttyUSB1'
+UC_PORT_NAME = '/dev/ttyUSB0'
 UC_BAUD_RATE = 115200
 
 class LabelNames:

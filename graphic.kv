@@ -21,7 +21,7 @@
                 orientation: 'horizontal'
                 size_hint: 1, .18
                 Label:
-                    text: root.main_app_name
+                    text: root.main_app_name_label
                     markup: 'True'
                     font_size: self.parent.width/20
                 Label:
@@ -47,53 +47,44 @@
                     Label:
                         size_hint: 1, 0.2
                     Label:
-                        id: barcode1
-                        text: ''
+                        text: str(root.barcode_label[0])
                         color: 0, 0, 0, 1
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode2
-                        text: ''
+                        text: str(root.barcode_label[1])
                         color: 0, 0, 0, 0.95
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode3
-                        text: ''
+                        text: str(root.barcode_label[2])
                         color: 0, 0, 0, 0.9
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode4
-                        text: ''
+                        text: str(root.barcode_label[3])
                         color: 0, 0, 0, 0.85
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode5
-                        text: ''
+                        text: str(root.barcode_label[4])
                         color: 0, 0, 0, 0.8
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode6
-                        text: ''
+                        text: str(root.barcode_label[5])
                         color: 0, 0, 0, 0.75
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode7
-                        text: ''
+                        text: str(root.barcode_label[6])
                         color: 0, 0, 0, 0.7
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode8
-                        text: ''
+                        text: str(root.barcode_label[7])
                         color: 0, 0, 0, 0.65
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode9
+                        id: str(root.barcode_label[8])
                         text: ''
                         color: 0, 0, 0, 0.6
                         font_size: self.parent.width/19
                     Label:
-                        id: barcode10
-                        text: ''
+                        text: str(root.barcode_label[9])
                         color: 0, 0, 0, 0.55
                         font_size: self.parent.width/19
                     Label:
@@ -105,23 +96,20 @@
                     Label:
                         size_hint: 1, 0.7
                     Label:
-                        id: last_code
-                        text: '[b]-[b]'
+                        text: '[b]{}[/b]'.format(root.last_barcode_label)
                         markup: 'True'
                         color: 1,0,0, .5
                         font_size: self.parent.width/10
                         size_hint: 1 , .6
                     Label:
-                        id: last_code_time
-                        text: '[b]-[b]'
+                        text: '[b]{}[/b]'.format(root.last_time_label)
                         markup: 'True'
                         color: 1,0,0,.6
                         font_size: self.parent.width/10
                         size_hint: 1, 0.5
                         size_hint: 1 , .6
                     Label:
-                        id: status
-                        text: '[b]DISCONNECT[b]'
+                        text: '[b]{}[/b]'.format(root.status_label)
                         markup: 'True'
                         color: 0,0,0,.7
                         font_size: self.parent.width/12
@@ -129,8 +117,7 @@
                         valign: 'middle'
                         size_hint: 1 , .6
                     Label:
-                        id: worker_label
-                        text: '-'
+                        text: root.worker_label
                         font_size: self.parent.width/13
                         color: 0, .6156, .48235, 1
                         halign: 'center'

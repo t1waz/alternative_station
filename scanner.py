@@ -1,13 +1,24 @@
 import serial
 import time
-from settings import UC_PORT_NAME, UC_BAUD_RATE
+import subprocess
 
 last_barcode = -2
 
 
 class BarcodeScanner:
 	def __init__(self):
-		self.MasterModule = serial.Serial(UC_PORT_NAME, UC_BAUD_RATE)
+		_ports = ['/dev/ttyUSB{}'.format(number) for number in range(0,20)]
+		for port in _ports:
+			try:
+				self.MasterModule = serial.Serial(port, 115200)
+				if self.MasterModule.isOpen():
+					self.MasterModule.close()
+				self.MasterModule = serial.Serial(port, 115200)
+			except serial.SerialException as error:
+				pass
+
+	def __del__(self):
+		self.MasterModule.close()
 
 	def serial_write(self, data_to_send):
 		self.MasterModule.write(str(data_to_send).encode('utf-8'))
@@ -17,31 +28,32 @@ class BarcodeScanner:
 		if (self.MasterModule.inWaiting() > 0):
 			try:
 				self.MasterModule.read(self.MasterModule.inWaiting())
+				time.sleep(0.05)
 			except:
 				pass
 			self.MasterModule.flush()
 
 	def serial_read(self):
 		try:
-			myData = self.MasterModule.read(self.MasterModule.inWaiting())
-			myData = myData.decode(encoding='UTF-8', errors='ignore')
+			_my_data = self.MasterModule.read(self.MasterModule.inWaiting()).decode(
+				encoding='UTF-8', errors='ignore')
 		except:
-			myData = '0'
-		return myData
+			_my_data = '0'
+		return _my_data
 
 	def ask_data(self):
-		sendConfirmation = ""
-		readConfirmation = ""
 		self.serial_clear()
 		self.serial_write('AC1E')
-		readData = self.serial_read()
-		if (readData[0:1] != '0'):
-			sendConfirmation = 'AD' + str(readData[8:17]) + 'E'
+		time.sleep(0.05)
+		readed_data = self.serial_read()
+		if (readed_data[0:1] != '0'):
+			sended_confirmation = 'AD{}E'.format(str(readed_data[8:17]))
 			self.serial_clear()
-			self.serial_write(sendConfirmation)
-			readConfirmation = self.serial_read()
-			if (readConfirmation[0:4] == 'AC2E'):
-				return int(readData[1:17])
+			self.serial_write(sended_confirmation)
+			time.sleep(0.05)
+			readed_confirmation = self.serial_read()
+			if (readed_confirmation[0:4] == 'AC2E'):
+				return int(readed_data[1:17])
 			else:
 				return 0
 		else:

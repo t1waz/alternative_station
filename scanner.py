@@ -1,8 +1,9 @@
 import serial
 import time
 import subprocess
+import threading
 
-last_barcode = -2
+last_barcode = 0
 
 
 class BarcodeScanner:
@@ -14,6 +15,7 @@ class BarcodeScanner:
 				if self.MasterModule.isOpen():
 					self.MasterModule.close()
 				self.MasterModule = serial.Serial(port, 115200)
+				print(port)
 			except serial.SerialException as error:
 				pass
 
@@ -53,7 +55,10 @@ class BarcodeScanner:
 			time.sleep(0.05)
 			readed_confirmation = self.serial_read()
 			if (readed_confirmation[0:4] == 'AC2E'):
-				return int(readed_data[1:17])
+				try:
+					return int(readed_data[3:17])
+				except ValueError:
+					return 0
 			else:
 				return 0
 		else:
@@ -67,3 +72,5 @@ class BarcodeScanner:
 			last_barcode = current_read
 
 		return last_barcode
+
+

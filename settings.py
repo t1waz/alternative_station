@@ -1,5 +1,2 @@
-class LabelNames:
-	def __init__(self):
-		self.main_app_name = '[b]LAGGING ROOM - 00[b]'
-		self.message_window_name = 'Wiadomosc dla Pana Murzyna'
-		self.info_window_name = "TO SAND"
+BACKEND_ACCESS_TOKEN = '123dupachujpietaszekalternativelongboardspiotrekkurwa'
+STATION = 'PREPARE'

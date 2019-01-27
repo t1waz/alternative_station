@@ -14,7 +14,7 @@ class AppService:
 
     def get_endpoint_data(self, _endpoint_string):
         try:
-            response = requests.get('http://127.0.0.1:8000/{}/'.format(_endpoint_string),
+            response = requests.get(url='http://127.0.0.1:8000/{}/'.format(_endpoint_string),
                                     headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
                                              'Content-Type': 'application/json'})
         except requests.ConnectionError:
@@ -24,7 +24,7 @@ class AppService:
         return response.json()
 
     def send_endpoint_data(self, _endpoint, _data_dict):
-        response = requests.post('http://127.0.0.1:8000/{}/'.format(_endpoint),
+        response = requests.post(url='http://127.0.0.1:8000/{}/'.format(_endpoint),
                                  data=json.dumps(_data_dict),
                                  headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
                                           'Content-Type': 'application/json'})
@@ -52,14 +52,15 @@ class AppService:
 
     def get_workers(self):
         workers_raw_data = self.get_endpoint_data('workers')
-        self.station_name = self.get_endpoint_data(
-            'stations/{}'.format(settings.STATION_NUMBER))['name']
-        for worker in workers_raw_data:
-            self.workers[worker['barcode']] = worker['username']
+        self.station_name = self.get_endpoint_data('stations/{}'.
+            format(settings.STATION_NUMBER))['name']
+
+        self.workers = {worker['barcode']: worker['username'] for 
+                        worker in workers_raw_data}
 
     def update_worker(self, _barcode):
         if _barcode in self.workers:
-            if self.current_worker == '':
+            if self.current_worker is '':
                 self.current_worker = self.workers[_barcode]
                 self.update_label('worker_label', self.current_worker)
                 self.update_label('status_label', 'welcome')
@@ -71,15 +72,14 @@ class AppService:
         return False
 
     def update_barcode_list(self, _data):
-        barcode_labels = ['barcode_label_{}'.format(n) for n in range(10,0,-1)]
+        barcode_labels = ['barcode_label_{}'.format(n) for n in range(10, 0, -1)]
+
         current_last_barcode_label = self.get_label_value('last_barcode_label')
         self.update_label('last_barcode_label', _data)
 
-        index = 0
-        for barcode_label in barcode_labels[:-1]:
-            index = index + 1
+        for index,barcode_label in enumerate(barcode_labels[:-1]):
             self.update_label(_label=barcode_label, 
-                              _data=self.get_label_value(barcode_labels[index]))
+                              _data=self.get_label_value(barcode_labels[index+1]))
 
         if current_last_barcode_label != '':
             first_history_label = '{} {}'.format(datetime.now().strftime('%H:%M:%S'),
@@ -109,16 +109,17 @@ class AppService:
         self.update_label('comment_box', '')
 
     def add_second_category(self, _barcode):
-        print("adding to second categoty")
+        print("adding to second categoty") # TU DOROBIC UPDEJT
 
     def main_handling(self, _barcode):
-        if self.get_label_value('main_app_name_label') == '':
-            self.update_label('main_app_name_label','{} ROOM'.format(self.station_name))
+        if self.get_label_value('main_app_name_label') is '':
+            self.update_label('main_app_name_label', '{} ROOM'.format(self.station_name))
+
         if _barcode != 0:
             if not self.update_worker(_barcode):
                 if not self.current_worker == "":
                     self.add_barcode(_barcode)
-                    if self.get_label_value('second_category_flag') == True:
+                    if self.get_label_value('second_category_flag') is True:
                         self.add_second_category(_barcode)
                         self.update_label('second_category_flag', False)
                 else:

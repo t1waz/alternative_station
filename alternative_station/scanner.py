@@ -1,22 +1,17 @@
 import serial
 import time
-import subprocess
-import threading
-
-last_barcode = 0
 
 
 class BarcodeScanner:
 	def __init__(self):
-		_ports = ['/dev/ttyUSB{}'.format(number) for number in range(0,20)]
+		_ports = ['/dev/ttyUSB{}'.format(number) for number in range(0, 20)]
 		for port in _ports:
 			try:
 				self.MasterModule = serial.Serial(port, 115200)
 				if self.MasterModule.isOpen():
 					self.MasterModule.close()
 				self.MasterModule = serial.Serial(port, 115200)
-				print(port)
-			except serial.SerialException as error:
+			except serial.SerialException:
 				pass
 
 	def __del__(self):
@@ -37,11 +32,10 @@ class BarcodeScanner:
 
 	def serial_read(self):
 		try:
-			_my_data = self.MasterModule.read(self.MasterModule.inWaiting()).decode(
+			return self.MasterModule.read(self.MasterModule.inWaiting()).decode(
 				encoding='UTF-8', errors='ignore')
 		except:
-			_my_data = '0'
-		return _my_data
+			return '0'
 
 	def ask_data(self):
 		self.serial_clear()
@@ -63,14 +57,3 @@ class BarcodeScanner:
 				return 0
 		else:
 			return 0
-	
-	def get_latest_barcode(self):
-		global last_barcode
-
-		current_read = self.ask_data()
-		if current_read != last_barcode and current_read != 0:
-			last_barcode = current_read
-
-		return last_barcode
-
-

@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from scanner import BarcodeScanner
 import threading
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 from service import AppService
 
 
@@ -41,6 +41,7 @@ class MainWindow(Screen):
     worker_label = StringProperty('-')
     comment_box = StringProperty()
     worker = ''
+    second_category_flag = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         super(MainWindow, self).__init__(**kwargs)
@@ -50,6 +51,17 @@ class MainWindow(Screen):
 
     def add_comment(self):
         self.comment_box = self.ids['comment'].text
+
+    def add_second_category(self):
+        if self.worker_label == '-':
+            self.status_label = 'SCAN WORKER CARD'
+            return False
+        if (self.second_category_flag == False):
+            self.second_category_flag = True
+            self.status_label = "2TH MODE"
+        else:
+            self.second_category_flag = False
+            self.status_label = "connected"
 
 
 

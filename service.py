@@ -71,16 +71,19 @@ class AppService:
         barcode_labels = ['barcode_label_{}'.format(n) for n in range(10,0,-1)]
         current_last_barcode_label = self.get_label_value('last_barcode_label')
         self.update_label('last_barcode_label', _data)
+
         index = 0
         for barcode_label in barcode_labels[:-1]:
             index = index + 1
             self.update_label(_label=barcode_label, 
                               _data=self.get_label_value(barcode_labels[index]))
+
         if current_last_barcode_label != '':
             first_history_label = '{} {}'.format(datetime.now().strftime('%H:%M:%S'),
                                                  current_last_barcode_label)
         else:
             first_history_label = ''
+
         self.update_label(barcode_labels[-1], first_history_label)
         self.update_label('last_time_label', datetime.now().strftime('%H:%M:%S'))
 
@@ -90,21 +93,29 @@ class AppService:
             "worker": self.current_worker,
             "station": settings.STATION,
         }
+
         comment = self.get_label_value('comment_box')
-        print("comment ", comment)
         if comment:
-             data_to_send['comment'] = comment
-             self.update_label('comment_box', '')
+            data_to_send['comment'] = comment
+            self.update_label('comment_box', '')
+
         is_sended, message = self.send_endpoint_data(_endpoint='add_scan',
                                                      _data_dict=data_to_send)
+
         self.update_label('status_label', message)
-        self.update_label('comment_box', ' ')
+        self.update_label('comment_box', '')
+
+    def add_second_category(self, _barcode):
+        print("adding to second categoty")
 
     def main_handling(self, _barcode):
         if _barcode != 0:
             if not self.update_worker(_barcode):
                 if not self.current_worker == "":
                     self.add_barcode(_barcode)
+                    if self.get_label_value('second_category_flag') == True:
+                        self.add_second_category(_barcode)
+                        self.update_label('second_category_flag', False)
                 else:
                     self.update_label('status_label', 'SCAN WORKER CARD')
             self.update_barcode_list(_barcode)

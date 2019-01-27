@@ -14,7 +14,7 @@ class AppService:
 
     def get_endpoint_data(self, _endpoint_string):
         try:
-            response = requests.get(url='http://127.0.0.1:8000/{}/'.format(_endpoint_string),
+            response = requests.get(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint_string),
                                     headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
                                              'Content-Type': 'application/json'})
         except requests.ConnectionError:
@@ -24,7 +24,7 @@ class AppService:
         return response.json()
 
     def send_endpoint_data(self, _endpoint, _data_dict):
-        response = requests.post(url='http://127.0.0.1:8000/{}/'.format(_endpoint),
+        response = requests.post(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint),
                                  data=json.dumps(_data_dict),
                                  headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
                                           'Content-Type': 'application/json'})

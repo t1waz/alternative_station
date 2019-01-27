@@ -10,6 +10,7 @@ class AppService:
         self.current_worker = ''
         self.current_comment = ''
         self.workers = {}
+        self.station_name = ''
 
     def get_endpoint_data(self, _endpoint_string):
         try:
@@ -51,6 +52,8 @@ class AppService:
 
     def get_workers(self):
         workers_raw_data = self.get_endpoint_data('workers')
+        self.station_name = self.get_endpoint_data(
+            'stations/{}'.format(settings.STATION_NUMBER))['name']
         for worker in workers_raw_data:
             self.workers[worker['barcode']] = worker['username']
 
@@ -91,7 +94,7 @@ class AppService:
         data_to_send = {
             "barcode": _barcode,
             "worker": self.current_worker,
-            "station": settings.STATION,
+            "station": self.station_name,
         }
 
         comment = self.get_label_value('comment_box')
@@ -109,6 +112,8 @@ class AppService:
         print("adding to second categoty")
 
     def main_handling(self, _barcode):
+        if self.get_label_value('main_app_name_label') == '':
+            self.update_label('main_app_name_label','{} ROOM'.format(self.station_name))
         if _barcode != 0:
             if not self.update_worker(_barcode):
                 if not self.current_worker == "":

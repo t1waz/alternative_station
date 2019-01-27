@@ -31,7 +31,7 @@ class MessageWindow(Popup):
 
 
 class MainWindow(Screen):
-    main_app_name_label = StringProperty('LAGGING ROOM')
+    main_app_name_label = StringProperty('')
     for index in range(1,11):
         variable_name = 'barcode_label_{}'.format(index)
         exec(variable_name + '  = StringProperty()')

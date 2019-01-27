@@ -1,2 +1,2 @@
 BACKEND_ACCESS_TOKEN = '123dupachujpietaszekalternativelongboardspiotrekkurwa'
-STATION = 'PREPARE'
+STATION_NUMBER = 1

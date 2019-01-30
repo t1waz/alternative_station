@@ -1,2 +1,3 @@
 .venv
 alternative_station/*.pyc
+alternative_station/__pycache__

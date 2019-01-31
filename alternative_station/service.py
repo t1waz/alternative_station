@@ -1,30 +1,8 @@
 from kivy.app import App
-import requests
-import settings
 from datetime import datetime
+from api_service import ApiService
 import json
-
-class ApiService:
-    def get_endpoint_data(self, _endpoint_string):
-        try:
-            response = requests.get(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint_string),
-                                    headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
-                                             'Content-Type': 'application/json'})
-        except requests.ConnectionError:
-            # TU ZROBIC JAKIS HANDLING JESLI NIE DZIALA SERWER ELO
-            return {}
-
-        return response.json()
-
-    def send_endpoint_data(self, _endpoint, _data_dict):
-        response = requests.post(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint),
-                                 data=json.dumps(_data_dict),
-                                 headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
-                                          'Content-Type': 'application/json'})
-        if response.status_code == 200:
-            return True, response.json()
-        else:
-            return False, response.json()
+import settings
 
 
 class AppService:
@@ -35,26 +13,13 @@ class AppService:
         self.station_name = ''
         self.my_app = my_app
 
-    def get_label_value(self, _label):
-        app = App.get_running_app()
-        if hasattr(app.root, _label):
-            return eval("app.root.{}".format(_label))
-        else:
-            return ''
-
-    def update_label(self, _label, _data):
-        app = App.get_running_app()
-        if hasattr(app.root, _label):
-            if type(_data) is int:
-                command = "app.root.{} = str({})".format(_label, _data)
-            else:
-                command = "app.root.{} = '{}'".format(_label, _data)
-            exec(command)
-
     def get_workers(self):
         workers_raw_data = self.api_service.get_endpoint_data('workers')
+
         self.station_name = self.api_service.get_endpoint_data('stations/{}'.
             format(settings.STATION_NUMBER)).get('name','')
+
+        self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
 
         self.workers = {worker['barcode']: worker['username'] for 
                         worker in workers_raw_data}
@@ -63,24 +28,22 @@ class AppService:
         if _barcode in self.workers:
             if self.current_worker is '':
                 self.current_worker = self.workers[_barcode]
-                self.update_label('worker_label', self.current_worker)
-                self.update_label('status_label', 'welcome')
+                self.my_app.worker_label = self.current_worker
+                self.my_app.status_label = 'welcome'
             else:
                 self.current_worker = ''
-                self.update_label('worker_label', '-')
-                self.update_label('status_label', '-')
+                self.my_app.worker_label = '-'
+                self.my_app.status_label = '-'
             return True
         return False
 
     def update_barcode_list(self, _data):
-        barcode_labels = ['barcode_label_{}'.format(n) for n in range(10, 0, -1)]
+        current_last_barcode_label = self.my_app.last_barcode_label
+        self.my_app.last_barcode_label = str(_data)
 
-        current_last_barcode_label = self.get_label_value('last_barcode_label')
-        self.update_label('last_barcode_label', _data)
-
-        for index,barcode_label in enumerate(barcode_labels[:-1]):
-            self.update_label(_label=barcode_label, 
-                              _data=self.get_label_value(barcode_labels[index+1]))
+        for index in range(10, 1, -1):
+            up_label = getattr(self.my_app, 'barcode_label_{}'.format(index-1))
+            setattr(self.my_app, 'barcode_label_{}'.format(index),up_label)
 
         if current_last_barcode_label != '':
             first_history_label = '{} {}'.format(datetime.now().strftime('%H:%M:%S'),
@@ -88,8 +51,8 @@ class AppService:
         else:
             first_history_label = ''
 
-        self.update_label(barcode_labels[-1], first_history_label)
-        self.update_label('last_time_label', datetime.now().strftime('%H:%M:%S'))
+        self.my_app.barcode_label_1 = first_history_label
+        self.my_app.last_time_label = datetime.now().strftime('%H:%M:%S')
 
     def add_barcode(self, _barcode):
         data_to_send = {
@@ -98,31 +61,27 @@ class AppService:
             "station": self.station_name,
         }
 
-        comment = self.get_label_value('comment_box')
+        comment = self.my_app.comment_box
         if comment:
             data_to_send['comment'] = comment
-            self.update_label('comment_box', '')
 
         is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_scan',
-                                                     _data_dict=data_to_send)
+                                                                 _data_dict=data_to_send)
 
-        self.update_label('status_label', message)
-        self.update_label('comment_box', '')
+        self.my_app.status_label = message
+        self.my_app.comment_box = ''
 
     def add_second_category(self, _barcode):
         print("adding to second categoty") # TU DOROBIC UPDEJT
 
     def main_handling(self, _barcode):
-        if self.my_app.main_app_name_label  is '':
-            self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
-
         if _barcode != 0:
             if not self.update_worker(_barcode):
                 if not self.current_worker == "":
                     self.add_barcode(_barcode)
-                    if self.get_label_value('second_category_flag') is True:
+                    if self.my_app.second_category_flag is True:
                         self.add_second_category(_barcode)
-                        self.update_label('second_category_flag', False)
+                        self.my_app.second_category_flag = False
                 else:
-                    self.update_label('status_label', 'SCAN WORKER CARD')
+                    self.my_app.status_label = 'SCAN WORKER CARD'
             self.update_barcode_list(_barcode)

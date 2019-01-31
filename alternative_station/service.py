@@ -12,6 +12,7 @@ class AppService:
         self.workers = {}
         self.station_name = ''
         self.my_app = my_app
+        self.get_workers()
 
     def get_workers(self):
         workers_raw_data = self.api_service.get_endpoint_data('workers')
@@ -20,6 +21,7 @@ class AppService:
             format(settings.STATION_NUMBER)).get('name','')
 
         self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
+        self.my_app.status_label = 'connected'
 
         self.workers = {worker['barcode']: worker['username'] for 
                         worker in workers_raw_data}
@@ -32,8 +34,9 @@ class AppService:
                 self.my_app.status_label = 'welcome'
             else:
                 self.current_worker = ''
-                self.my_app.worker_label = '-'
+                self.my_app.worker_label = 'no worker'
                 self.my_app.status_label = '-'
+            self.my_app.second_category_flag = False
             return True
         return False
 
@@ -67,21 +70,32 @@ class AppService:
 
         is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_scan',
                                                                  _data_dict=data_to_send)
-
         self.my_app.status_label = message
         self.my_app.comment_box = ''
 
     def add_second_category(self, _barcode):
-        print("adding to second categoty") # TU DOROBIC UPDEJT
+        data_to_send = {
+            "barcode": _barcode,
+            "second_category": True
+        }
+
+        is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_second_category',
+                                                                 _data_dict=data_to_send)
+        if is_sended:
+            message = 'ADDED 2th'
+        else:
+            message = 'NOT ADDED 2th'
+        self.my_app.status_label = message
 
     def main_handling(self, _barcode):
         if _barcode != 0:
             if not self.update_worker(_barcode):
                 if not self.current_worker == "":
-                    self.add_barcode(_barcode)
                     if self.my_app.second_category_flag is True:
                         self.add_second_category(_barcode)
                         self.my_app.second_category_flag = False
+                    else:
+                        self.add_barcode(_barcode)
                 else:
                     self.my_app.status_label = 'SCAN WORKER CARD'
             self.update_barcode_list(_barcode)

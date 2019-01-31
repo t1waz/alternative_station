@@ -2,10 +2,12 @@ import requests
 import json
 import settings
 
+
 class ApiService:
     def get_endpoint_data(self, _endpoint_string):
         try:
-            response = requests.get(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint_string),
+            url = 'http://{}/{}/'.format(settings.BACKEND_URL, _endpoint_string)
+            response = requests.get(url=url,
                                     headers={'Access-Token': settings.BACKEND_ACCESS_TOKEN,
                                              'Content-Type': 'application/json'})
         except requests.ConnectionError:

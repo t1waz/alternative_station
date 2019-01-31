@@ -64,6 +64,7 @@ class MainWindow(Screen):
         else:
             self.status_label = "connected"
 
+
 class ScanApp(App):
     def __init__(self, **kwargs):
         super(ScanApp, self).__init__(**kwargs)

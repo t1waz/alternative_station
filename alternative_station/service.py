@@ -12,13 +12,13 @@ class AppService:
         self.workers = {}
         self.station_name = ''
         self.my_app = my_app
-        self.get_workers()
+        self.init_values()
 
-    def get_workers(self):
+    def init_values(self):
         workers_raw_data = self.api_service.get_endpoint_data('workers')
 
         self.station_name = self.api_service.get_endpoint_data('stations/{}'.
-            format(settings.STATION_NUMBER)).get('name','')
+            format(settings.STATION_NUMBER)).get('name', '')
 
         self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
         self.my_app.status_label = 'connected'
@@ -45,8 +45,8 @@ class AppService:
         self.my_app.last_barcode_label = str(_data)
 
         for index in range(10, 1, -1):
-            up_label = getattr(self.my_app, 'barcode_label_{}'.format(index-1))
-            setattr(self.my_app, 'barcode_label_{}'.format(index),up_label)
+            up_label = getattr(self.my_app, 'barcode_label_{}'.format(index - 1))
+            setattr(self.my_app, 'barcode_label_{}'.format(index), up_label)
 
         if current_last_barcode_label != '':
             first_history_label = '{} {}'.format(datetime.now().strftime('%H:%M:%S'),

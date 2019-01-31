@@ -15,10 +15,10 @@ Builder.load_file('graphic.kv')
 
 
 class ScannerThread(threading.Thread):
-    def __init__(self):
+    def __init__(self, my_app):
         threading.Thread.__init__(self)
         self.barcode_scanner = BarcodeScanner()
-        self.app_service = AppService()
+        self.app_service = AppService(my_app)
         self.last_barcode_scan = 0
 
     def run(self):
@@ -71,11 +71,12 @@ class MainWindow(Screen):
 
 class ScanApp(App):
     def __init__(self, **kwargs):
-        ScannerThread().start()
         super(ScanApp, self).__init__(**kwargs)
 
     def build(self):
-        return MainWindow()
+        main_window = MainWindow()
+        ScannerThread(main_window).start()
+        return main_window
 
 
 if __name__ == '__main__':

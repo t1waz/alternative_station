@@ -4,14 +4,7 @@ import settings
 from datetime import datetime
 import json
 
-
-class AppService:
-    def __init__(self):
-        self.current_worker = ''
-        self.current_comment = ''
-        self.workers = {}
-        self.station_name = ''
-
+class ApiService:
     def get_endpoint_data(self, _endpoint_string):
         try:
             response = requests.get(url='http://{}/{}/'.format(settings.BACKEND_URL, _endpoint_string),
@@ -19,7 +12,7 @@ class AppService:
                                              'Content-Type': 'application/json'})
         except requests.ConnectionError:
             # TU ZROBIC JAKIS HANDLING JESLI NIE DZIALA SERWER ELO
-            return '0'
+            return {}
 
         return response.json()
 
@@ -32,6 +25,15 @@ class AppService:
             return True, response.json()
         else:
             return False, response.json()
+
+
+class AppService:
+    def __init__(self, my_app):
+        self.api_service = ApiService()
+        self.current_worker = ''
+        self.workers = {}
+        self.station_name = ''
+        self.my_app = my_app
 
     def get_label_value(self, _label):
         app = App.get_running_app()
@@ -50,9 +52,9 @@ class AppService:
             exec(command)
 
     def get_workers(self):
-        workers_raw_data = self.get_endpoint_data('workers')
-        self.station_name = self.get_endpoint_data('stations/{}'.
-            format(settings.STATION_NUMBER))['name']
+        workers_raw_data = self.api_service.get_endpoint_data('workers')
+        self.station_name = self.api_service.get_endpoint_data('stations/{}'.
+            format(settings.STATION_NUMBER)).get('name','')
 
         self.workers = {worker['barcode']: worker['username'] for 
                         worker in workers_raw_data}
@@ -101,7 +103,7 @@ class AppService:
             data_to_send['comment'] = comment
             self.update_label('comment_box', '')
 
-        is_sended, message = self.send_endpoint_data(_endpoint='add_scan',
+        is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_scan',
                                                      _data_dict=data_to_send)
 
         self.update_label('status_label', message)
@@ -111,8 +113,8 @@ class AppService:
         print("adding to second categoty") # TU DOROBIC UPDEJT
 
     def main_handling(self, _barcode):
-        if self.get_label_value('main_app_name_label') is '':
-            self.update_label('main_app_name_label', '{} ROOM'.format(self.station_name))
+        if self.my_app.main_app_name_label  is '':
+            self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
 
         if _barcode != 0:
             if not self.update_worker(_barcode):

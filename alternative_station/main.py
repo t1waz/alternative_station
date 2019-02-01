@@ -22,7 +22,7 @@ class ScannerThread(threading.Thread):
 
     def run(self):
         while True:
-            current_barcode_scan = self.barcode_scanner.ask_data()
+            current_barcode_scan = self.barcode_scanner.handle_scanner()
             self.app_service.main_handling(current_barcode_scan)
 
 
@@ -38,7 +38,6 @@ class MainWindow(Screen):
     status_label = StringProperty('-')
     worker_label = StringProperty('no worker')
     comment_box = StringProperty()
-    worker = ''
     second_category_flag = BooleanProperty(False)
     for index in range(1, 11):
         variable_name = 'barcode_label_{}'.format(index)

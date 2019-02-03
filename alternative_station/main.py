@@ -23,7 +23,8 @@ class ScannerThread(threading.Thread):
     def run(self):
         while True:
             current_barcode_scan = self.barcode_scanner.handle_scanner()
-            self.app_service.main_handling(current_barcode_scan)
+            if current_barcode_scan != 0:
+                self.app_service.main_handling(current_barcode_scan)
 
 
 class MessageWindow(Popup):
@@ -35,7 +36,7 @@ class MainWindow(Screen):
     main_app_name_label = StringProperty('')
     last_barcode_label = StringProperty('')
     last_time_label = StringProperty('-')
-    status_label = StringProperty('-')
+    status_label = StringProperty('connected')
     worker_label = StringProperty('no worker')
     comment_box = StringProperty()
     second_category_flag = BooleanProperty(False)

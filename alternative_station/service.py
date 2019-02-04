@@ -1,13 +1,11 @@
-from kivy.app import App
 from datetime import datetime
 from api_service import ApiService
-import json
 import settings
 
 
 class AppService:
     def __init__(self, my_app):
-        self.api_service = ApiService()
+        self.api = ApiService()
         self.current_worker = ''
         self.workers = {}
         self.station_name = ''
@@ -15,9 +13,9 @@ class AppService:
         self.init_values()
 
     def init_values(self):
-        workers_raw_data = self.api_service.get_endpoint_data('workers')
+        workers_raw_data = self.api.get_endpoint_data('workers')
 
-        self.station_name = self.api_service.get_endpoint_data('stations/{}'.
+        self.station_name = self.api.get_endpoint_data('stations/{}'.
             format(settings.STATION_NUMBER)).get('name', '')
 
         self.my_app.main_app_name_label = '{} ROOM'.format(self.station_name)
@@ -62,10 +60,10 @@ class AppService:
         }
 
         if self.my_app.comment_box:
-            data_to_send['comment'] = comment
+            data_to_send['comment'] = self.my_app.comment_box
 
-        is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_scan',
-                                                                 _data_dict=data_to_send)
+        is_sended, message = self.api.send_endpoint_data(endpoint='add_scan',
+                                                         data=data_to_send)
         self.my_app.status_label = message
         self.my_app.comment_box = ''
 
@@ -75,8 +73,8 @@ class AppService:
             "second_category": True
         }
 
-        is_sended, message = self.api_service.send_endpoint_data(_endpoint='add_second_category',
-                                                                 _data_dict=data_to_send)
+        is_sended, message = self.api.send_endpoint_data(endpoint='add_second_category',
+                                                         data=data_to_send)
         if is_sended:
             message = 'ADDED 2th'
         else:

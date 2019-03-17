@@ -62,6 +62,13 @@ class AppService:
         if self.my_app.comment_box:
             data_to_send['comment'] = self.my_app.comment_box
 
+        if settings.STATION_NUMBER == 1:
+            new_barcode = {
+                "barcode": _barcode
+            }
+            is_sended, message = self.api.send_endpoint_data(endpoint='add_barcode',
+                                                             data=new_barcode)
+
         is_sended, message = self.api.send_endpoint_data(endpoint='add_scan',
                                                          data=data_to_send)
         self.my_app.status_label = message

@@ -17,7 +17,8 @@ class BarcodeScanner:
             self.MasterModule.flush()
 
     def init_connection(self):
-        _ports = ['/dev/ttyUSB{}'.format(number) for number in range(0, 20)]
+        _ports = ['/dev/ttyUSB{}'.format(number) for number in range(0, 20)] + \
+                 ['/dev/ttyACM{}'.format(number) for number in range(0, 20)]
 
         for port in _ports:
             try:
@@ -35,6 +36,7 @@ class BarcodeScanner:
                 time.sleep(0.5)
                 self.serial_clear()
                 time.sleep(0.5)
+                break
             except serial.SerialException:
                 pass
 
@@ -67,6 +69,10 @@ class BarcodeScanner:
             if (readed_confirmation[0:4] == 'AC2E'):
                 try:
                     return int(readed_data[3:16])
+                except ValueError:
+                    pass
+                try:
+                    return int(readed_data[1:13])
                 except ValueError:
                     return 0
             else:

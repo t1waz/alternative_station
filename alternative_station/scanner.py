@@ -17,8 +17,7 @@ class BarcodeScanner:
             self.MasterModule.flush()
 
     def init_connection(self):
-        _ports = ['/dev/ttyUSB{}'.format(number) for number in range(0, 20)] +
-                 ['/dev/ttyAMA{}'.format(number) for number in range(0, 30)]
+        _ports = ['/dev/ttyUSB{}'.format(number) for number in range(0, 20)]
 
         for port in _ports:
             try:
